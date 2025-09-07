@@ -5,7 +5,6 @@ project(LimitOrderBook VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 
-
 enable_testing()
 
 add_subdirectory(googletest)
@@ -14,6 +13,7 @@ set(Headers
     ./Limit_Order_Book/Book.hpp
     ./Limit_Order_Book/Limit.hpp
     ./Limit_Order_Book/Order.hpp
+    ./Limit_Order_Book/MPMCQueue.h
     ./Process_Orders/OrderPipeline.hpp
     ./Generate_Orders/GenerateOrders.hpp
 )
@@ -38,4 +38,5 @@ add_subdirectory(test)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+include_directories(${CMAKE_SOURCE_DIR}/Limit_Order_Book)
 include(CPack)
