@@ -31,7 +31,7 @@ int main()
     for (uint64_t i = 1; i <= 10; ++i)
     {
         OrderMessage order(i, "AAPL", 150.0 + i, 100 + i, (i % 2 == 0) ? 'B' : 'S');
-        int sent = send(sock, (char*)&order, sizeof(OrderMessage), 0);
+        int sent = send(sock, (char *)&order, sizeof(OrderMessage), 0);
         std::cout << "Sent order " << order.id << " (" << sent << " bytes)" << std::endl;
     }
     std::cout << "Client finished sending orders, disconnecting." << std::endl;

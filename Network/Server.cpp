@@ -62,13 +62,15 @@ int main()
     serverAddr.sin_addr.s_addr = INADDR_ANY;
     serverAddr.sin_port = htons(PORT);
 
-    if (bind(serverSock, (sockaddr *)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR) {
+    if (bind(serverSock, (sockaddr *)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)
+    {
         std::cerr << "Bind failed with error: " << WSAGetLastError() << std::endl;
         closesocket(serverSock);
         WSACleanup();
         return 1;
     }
-    if (listen(serverSock, 5) == SOCKET_ERROR) {
+    if (listen(serverSock, 5) == SOCKET_ERROR)
+    {
         std::cerr << "Listen failed with error: " << WSAGetLastError() << std::endl;
         closesocket(serverSock);
         WSACleanup();
