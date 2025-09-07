@@ -38,10 +38,10 @@ void handleClient(int clientSock)
     while (running)
     {
         OrderMessage order;
-        int bytes = recv(clientSock, (char*)&order, sizeof(order), 0);
+        int bytes = recv(clientSock, (char *)&order, sizeof(order), 0);
         if (bytes <= 0)
             break;
-    orderQueue.emplace(std::move(order));
+        orderQueue.emplace(std::move(order));
     }
     closesocket(clientSock);
 }
@@ -49,7 +49,8 @@ void handleClient(int clientSock)
 int main()
 {
     WSADATA wsaData;
-    if (WSAStartup(MAKEWORD(2,2), &wsaData) != 0) {
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+    {
         std::cerr << "WSAStartup failed" << std::endl;
         return 1;
     }

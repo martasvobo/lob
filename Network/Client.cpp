@@ -10,7 +10,8 @@ constexpr int PORT = 9000;
 int main()
 {
     WSADATA wsaData;
-    if (WSAStartup(MAKEWORD(2,2), &wsaData) != 0) {
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+    {
         std::cerr << "WSAStartup failed" << std::endl;
         return 1;
     }
@@ -29,7 +30,7 @@ int main()
     for (uint64_t i = 1; i <= 10; ++i)
     {
         OrderMessage order{i, "AAPL", 150.0 + i, 100 + i, (i % 2 == 0) ? 'B' : 'S'};
-        send(sock, (char*)&order, sizeof(order), 0);
+        send(sock, (char *)&order, sizeof(order), 0);
         std::cout << "Sent order " << order.id << std::endl;
     }
     closesocket(sock);
