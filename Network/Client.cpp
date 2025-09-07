@@ -18,7 +18,7 @@ int main()
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     sockaddr_in serverAddr{};
     serverAddr.sin_family = AF_INET;
-    serverAddr.sin_addr.s_addr = INADDR_ANY;
+    inet_pton(AF_INET, "127.0.0.1", &serverAddr.sin_addr);
     serverAddr.sin_port = htons(PORT);
 
     if (connect(sock, (sockaddr *)&serverAddr, sizeof(serverAddr)) < 0)
@@ -26,13 +26,15 @@ int main()
         std::cerr << "Connection failed" << std::endl;
         return 1;
     }
+    std::cout << "Connected to server!" << std::endl;
 
     for (uint64_t i = 1; i <= 10; ++i)
     {
-        OrderMessage order{i, "AAPL", 150.0 + i, 100 + i, (i % 2 == 0) ? 'B' : 'S'};
-        send(sock, (char *)&order, sizeof(order), 0);
-        std::cout << "Sent order " << order.id << std::endl;
+        OrderMessage order(i, "AAPL", 150.0 + i, 100 + i, (i % 2 == 0) ? 'B' : 'S');
+        int sent = send(sock, (char*)&order, sizeof(OrderMessage), 0);
+        std::cout << "Sent order " << order.id << " (" << sent << " bytes)" << std::endl;
     }
+    std::cout << "Client finished sending orders, disconnecting." << std::endl;
     closesocket(sock);
     WSACleanup();
     return 0;

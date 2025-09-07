@@ -39,10 +39,12 @@ void handleClient(int clientSock)
     {
         OrderMessage order;
         int bytes = recv(clientSock, (char *)&order, sizeof(order), 0);
+        std::cout << "Received " << bytes << " bytes from client " << clientSock << std::endl;
         if (bytes <= 0)
             break;
         orderQueue.emplace(std::move(order));
     }
+    std::cout << "Client disconnected: " << clientSock << std::endl;
     closesocket(clientSock);
 }
 
@@ -60,8 +62,18 @@ int main()
     serverAddr.sin_addr.s_addr = INADDR_ANY;
     serverAddr.sin_port = htons(PORT);
 
-    bind(serverSock, (sockaddr *)&serverAddr, sizeof(serverAddr));
-    listen(serverSock, 5);
+    if (bind(serverSock, (sockaddr *)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR) {
+        std::cerr << "Bind failed with error: " << WSAGetLastError() << std::endl;
+        closesocket(serverSock);
+        WSACleanup();
+        return 1;
+    }
+    if (listen(serverSock, 5) == SOCKET_ERROR) {
+        std::cerr << "Listen failed with error: " << WSAGetLastError() << std::endl;
+        closesocket(serverSock);
+        WSACleanup();
+        return 1;
+    }
     std::cout << "Server listening on port " << PORT << std::endl;
 
     std::thread processor(processOrders);
@@ -72,6 +84,7 @@ int main()
         int clientSock = accept(serverSock, nullptr, nullptr);
         if (clientSock < 0)
             continue;
+        std::cout << "Accepted client connection: " << clientSock << std::endl;
         clientThreads.emplace_back(handleClient, clientSock);
     }
 

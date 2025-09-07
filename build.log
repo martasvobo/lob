@@ -1,9 +1,6 @@
 MSBuild version 17.9.8+b34f75857 for .NET Framework
 
   Scanning sources for module dependencies...
-  GenerateOrders.cpp
-  Compiling...
-  GenerateOrders.cpp
   LimitOrderBook_lib.vcxproj -> C:\Users\Kompiuteris\Desktop\Limit-Order-Book\build\Debug\LimitOrderBook_lib.lib
   Scanning sources for module dependencies...
   LimitOrderBook.vcxproj -> C:\Users\Kompiuteris\Desktop\Limit-Order-Book\build\Debug\LimitOrderBook.exe
@@ -11,10 +8,6 @@ MSBuild version 17.9.8+b34f75857 for .NET Framework
   Client.cpp
   Compiling...
   Client.cpp
-C:\Users\Kompiuteris\Desktop\Limit-Order-Book\Network\Client.cpp(32,54): warning C4838: conversion from 'uint64_t' to 'uint32_t' requires a narrowing conversion [C:\Users\Kompiuteris\Desktop\Limit-Order-Book\build\NetworkClient.vcxproj]
   NetworkClient.vcxproj -> C:\Users\Kompiuteris\Desktop\Limit-Order-Book\build\Debug\NetworkClient.exe
   Scanning sources for module dependencies...
-  Server.cpp
-  Compiling...
-  Server.cpp
   NetworkServer.vcxproj -> C:\Users\Kompiuteris\Desktop\Limit-Order-Book\build\Debug\NetworkServer.exe
