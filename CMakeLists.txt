@@ -5,9 +5,9 @@ project(LimitOrderBook VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 
-enable_testing()
 
-add_subdirectory(googletest)
+# enable_testing()
+# add_subdirectory(googletest)
 
 set(Headers
     ./Limit_Order_Book/Book.hpp
@@ -34,9 +34,16 @@ add_executable(${PROJECT_NAME} main.cpp)
 # Link the executable with the library
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_lib)
 
-add_subdirectory(test)
+# add_subdirectory(test)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include_directories(${CMAKE_SOURCE_DIR}/Limit_Order_Book)
+include_directories(${CMAKE_SOURCE_DIR}/Network)
+
+# Build network server and client executables
+add_executable(NetworkServer ./Network/Server.cpp)
+add_executable(NetworkClient ./Network/Client.cpp)
+target_include_directories(NetworkServer PRIVATE ${CMAKE_SOURCE_DIR}/Network ${CMAKE_SOURCE_DIR}/Limit_Order_Book)
+target_include_directories(NetworkClient PRIVATE ${CMAKE_SOURCE_DIR}/Network)
 include(CPack)

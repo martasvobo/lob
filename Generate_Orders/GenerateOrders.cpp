@@ -11,6 +11,8 @@
 #include <algorithm>
 #include <functional>
 
+#include <numeric>
+
 GenerateOrders::GenerateOrders(Book* _book) : book(_book), gen(rd()) {}
 
 void GenerateOrders::market()
@@ -302,6 +304,7 @@ void GenerateOrders::createOrders(int numberOfOrders)
     };
 
     // Calculate the cumulative probabilities
+    #include <numeric>
     std::partial_sum(probabilities.begin(), probabilities.end(), probabilities.begin());
 
     for (size_t i = 1; i < numberOfOrders + 1; i++)
