@@ -7,8 +7,9 @@
 #include <vector>
 #include <chrono>
 
-int main() {
-    Book* book = new Book();
+int main()
+{
+    Book *book = new Book();
 
     OrderPipeline orderPipeline(book);
 
@@ -18,8 +19,7 @@ int main() {
 
     orderPipeline.processOrdersFromFile("./initialOrders.txt");
 
-    generateOrders.createOrders(5000000);
-
+    generateOrders.createOrders(5000);
 
     // Start measuring time
     auto start = std::chrono::high_resolution_clock::now();
