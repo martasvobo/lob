@@ -12,13 +12,13 @@ int main() {
 
     OrderPipeline orderPipeline(book);
 
-    // GenerateOrders generateOrders(book);
+    GenerateOrders generateOrders(book);
 
-    // generateOrders.createInitialOrders(10000, 300);
+    generateOrders.createInitialOrders(10000, 300);
 
     orderPipeline.processOrdersFromFile("./initialOrders.txt");
 
-    // generateOrders.createOrders(5000000);
+    generateOrders.createOrders(5000000);
 
 
     // Start measuring time

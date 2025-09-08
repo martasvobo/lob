@@ -300,7 +300,7 @@ void GenerateOrders::modifyStopLimit()
 void GenerateOrders::createOrders(int numberOfOrders)
 {
     // Open a file named "orders.txt" for writing
-    file.open("C:/Users/benja/Documents/Limit_order_book/orders.txt");
+    file.open("./Orders.txt");
 
     if (!file.is_open())
     {
@@ -369,7 +369,7 @@ void GenerateOrders::createOrders(int numberOfOrders)
 void GenerateOrders::createInitialOrders(int numberOfOrders, int centreOfBook)
 {
     // Open a file named "initialOrders.txt" for writing
-    std::ofstream file("C:/Users/benja/Documents/Limit_order_book/initialOrders.txt");
+    std::ofstream file("./initialOrders.txt");
 
     if (!file.is_open())
     {

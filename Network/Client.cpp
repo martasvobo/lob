@@ -5,6 +5,8 @@
 #include <ws2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
 
+#include <chrono>
+
 constexpr int PORT = 9000;
 
 int main()
@@ -30,7 +32,10 @@ int main()
 
     for (uint64_t i = 1; i <= 10; ++i)
     {
-        OrderMessage order(i, "AAPL", 150.0 + i, 100 + i, (i % 2 == 0) ? 'B' : 'S');
+        uint64_t ts = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                          std::chrono::high_resolution_clock::now().time_since_epoch())
+                          .count();
+        OrderMessage order(i, ts, "AAPL", 150.0 + i, 100 + i, (i % 2 == 0) ? 'B' : 'S');
         int sent = send(sock, (char *)&order, sizeof(OrderMessage), 0);
         std::cout << "Sent order " << order.id << " (" << sent << " bytes)" << std::endl;
     }

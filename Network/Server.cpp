@@ -22,14 +22,42 @@ std::atomic<bool> running{true};
 
 void processOrders()
 {
+    size_t processed = 0;
+    uint64_t total_latency = 0;
+    uint64_t min_latency = UINT64_MAX;
+    uint64_t max_latency = 0;
+    auto start = std::chrono::high_resolution_clock::now();
     while (running)
     {
         OrderMessage order;
         if (orderQueue.try_pop(order))
         {
-            std::cout << "Processed order: " << order.id << " " << order.symbol << " " << order.price << " " << order.quantity << " " << order.side << std::endl;
+            processed++;
+            uint64_t now = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                               std::chrono::high_resolution_clock::now().time_since_epoch())
+                               .count();
+            uint64_t latency = now - order.timestamp;
+            total_latency += latency;
+            if (latency < min_latency)
+                min_latency = latency;
+            if (latency > max_latency)
+                max_latency = latency;
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        // Benchmark for 5 seconds
+        auto now_tp = std::chrono::high_resolution_clock::now();
+        if (std::chrono::duration_cast<std::chrono::seconds>(now_tp - start).count() >= 5)
+        {
+            double throughput = processed / 5.0;
+            double avg_latency = processed ? (total_latency / processed) / 1e6 : 0.0;
+            std::cout << "Benchmark: Processed " << processed << " orders in 5 seconds. Throughput: " << throughput << " orders/sec" << std::endl;
+            std::cout << "Latency (ms): avg=" << avg_latency << " min=" << (min_latency / 1e6) << " max=" << (max_latency / 1e6) << std::endl;
+            processed = 0;
+            total_latency = 0;
+            min_latency = UINT64_MAX;
+            max_latency = 0;
+            start = now_tp;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
 

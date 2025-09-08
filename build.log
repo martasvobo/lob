@@ -10,4 +10,7 @@ MSBuild version 17.9.8+b34f75857 for .NET Framework
   Client.cpp
   NetworkClient.vcxproj -> C:\Users\Kompiuteris\Desktop\Limit-Order-Book\build\Debug\NetworkClient.exe
   Scanning sources for module dependencies...
+  Server.cpp
+  Compiling...
+  Server.cpp
   NetworkServer.vcxproj -> C:\Users\Kompiuteris\Desktop\Limit-Order-Book\build\Debug\NetworkServer.exe
