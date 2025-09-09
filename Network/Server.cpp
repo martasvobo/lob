@@ -4,8 +4,6 @@
 #include <vector>
 #include <chrono>
 #include <atomic>
-#include <mutex>
-#include <cstring>
 #include <limits>
 
 #ifdef _WIN32
@@ -40,6 +38,7 @@ void handleClient(int clientSock) {
         int bytes = recv(clientSock, (char*)&order, sizeof(order), 0);
         if (bytes <= 0) break;
 
+        // server timestamp for one-way latency measurement
         uint64_t now = std::chrono::duration_cast<std::chrono::nanoseconds>(
                            std::chrono::high_resolution_clock::now().time_since_epoch()).count();
         uint64_t latency = now - order.timestamp;
@@ -48,6 +47,9 @@ void handleClient(int clientSock) {
         total_latency += latency;
         if (latency < min_latency) min_latency = latency;
         if (latency > max_latency) max_latency = latency;
+
+        // echo back to client for RTT measurement
+        send(clientSock, (char*)&order, sizeof(order), 0);
     }
     closesocket(clientSock);
 }
@@ -72,7 +74,7 @@ void benchmarkPrinter() {
 
         std::cout << "Processed " << count << " orders in " << elapsed << "s. "
                   << "Throughput=" << throughput << " orders/s, "
-                  << "Latency avg=" << avg_latency_ms << " ms, "
+                  << "One-way Latency avg=" << avg_latency_ms << " ms, "
                   << "min=" << (min_lat==std::numeric_limits<uint64_t>::max()?0:min_lat/1e6) << " ms, "
                   << "max=" << max_lat/1e6 << " ms\n";
     }
