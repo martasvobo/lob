@@ -1,0 +1,9 @@
+CMake is re-running because C:/Users/Kompiuteris/Desktop/Limit-Order-Book/build/CMakeFiles/generate.stamp is out-of-date.
+  the file 'C:/Users/Kompiuteris/Desktop/Limit-Order-Book/CMakeLists.txt'
+  is newer than 'C:/Users/Kompiuteris/Desktop/Limit-Order-Book/build/CMakeFiles/generate.stamp.depend'
+  result='-1'
+-- Configuring done (0.1s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/Users/Kompiuteris/Desktop/Limit-Order-Book/build
+[ 50%] Linking CXX executable NetworkClient.exe
+[100%] Built target NetworkClient
