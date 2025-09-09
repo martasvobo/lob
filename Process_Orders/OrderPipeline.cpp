@@ -4,7 +4,6 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <random>
 #include <chrono>
 
 OrderPipeline::OrderPipeline(Book* book) : book(book) {
@@ -23,7 +22,7 @@ OrderPipeline::OrderPipeline(Book* book) : book(book) {
     };
 }
 
-void OrderPipeline::processOrdersFromFile(const std::string& filename) 
+void OrderPipeline::processOrdersFromFile(const std::string& filename)
 {
     std::ifstream file(filename);
     if (!file.is_open()) {
@@ -51,14 +50,14 @@ void OrderPipeline::processOrdersFromFile(const std::string& filename)
 
                 auto end = std::chrono::steady_clock::now();
                 auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
-                
+
                 if (orderType == "AddLimit")
                 {
                     csvFile << orderType << "," << duration.count() << "," << 0 << "," << book->AVLTreeBalanceCount << std::endl;
                 } else {
                     csvFile << orderType << "," << duration.count() << "," << book->executedOrdersCount << ","  << book->AVLTreeBalanceCount << std::endl;
                 }
-                
+
             } else {
                 std::cerr << "Unknown order type: " << orderType << std::endl;
             }

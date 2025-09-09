@@ -1,10 +1,7 @@
 #include "./Generate_Orders/GenerateOrders.hpp"
 #include "./Process_Orders/OrderPipeline.hpp"
 #include "./Limit_Order_Book/Book.hpp"
-#include "./Limit_Order_Book/Limit.hpp"
-#include "./Limit_Order_Book/Order.hpp"
 #include <iostream>
-#include <vector>
 #include <chrono>
 
 int main()
@@ -19,7 +16,7 @@ int main()
 
     orderPipeline.processOrdersFromFile("./initialOrders.txt");
 
-    generateOrders.createOrders(5000);
+    generateOrders.createOrders(5000000);
 
     // Start measuring time
     auto start = std::chrono::high_resolution_clock::now();

@@ -11,7 +11,7 @@ set(Headers
     ./Limit_Order_Book/Book.hpp
     ./Limit_Order_Book/Limit.hpp
     ./Limit_Order_Book/Order.hpp
-    ./Limit_Order_Book/MPMCQueue.h
+    ./Limit_Order_Book/MPSCQueue.hpp
     ./Process_Orders/OrderPipeline.hpp
     ./Generate_Orders/GenerateOrders.hpp
 )

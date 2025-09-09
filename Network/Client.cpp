@@ -1,11 +1,25 @@
 #include "OrderMessage.hpp"
 #include <iostream>
 #include <cstring>
+#include <chrono>
+
+#ifdef _WIN32
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
-
-#include <chrono>
+#else
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#define closesocket close
+#define SOCKET_ERROR -1
+#define WSADATA int
+#define WSAStartup(a,b) 0
+#define WSACleanup()
+#define WSAGetLastError() errno
+#define MAKEWORD(a,b) 0
+#endif
 
 constexpr int PORT = 9000;
 

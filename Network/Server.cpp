@@ -1,24 +1,40 @@
 #include "OrderMessage.hpp"
-#include "../Limit_Order_Book/MPMCQueue.h"
+#include "../Limit_Order_Book/MPSCQueue.hpp"
 #include <iostream>
 #include <thread>
 #include <vector>
 #include <chrono>
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#pragma comment(lib, "ws2_32.lib")
 #include <atomic>
 #include <cstring>
+
+#ifdef _WIN32
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
+#else
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#define closesocket close
+#define SOCKET_ERROR -1
+#define WSADATA int
+#define WSAStartup(a,b) 0
+#define WSACleanup()
+#define WSAGetLastError() errno
+#define MAKEWORD(a,b) 0
+#endif
 
 constexpr int PORT = 9000;
 constexpr size_t QUEUE_CAPACITY = 1024;
 
-// Example: queue for incoming orders
-rigtorp::MPMCQueue<OrderMessage> orderQueue(QUEUE_CAPACITY);
 std::atomic<bool> running{true};
+
+// Function to get the singleton queue instance
+blanknamespace::MPSCQueue<OrderMessage>& getOrderQueue() {
+    static blanknamespace::MPSCQueue<OrderMessage> orderQueue(QUEUE_CAPACITY);
+    return orderQueue;
+}
 
 void processOrders()
 {
@@ -27,6 +43,7 @@ void processOrders()
     uint64_t min_latency = UINT64_MAX;
     uint64_t max_latency = 0;
     auto start = std::chrono::high_resolution_clock::now();
+    auto& orderQueue = getOrderQueue();
     while (running)
     {
         OrderMessage order;
@@ -63,6 +80,7 @@ void processOrders()
 
 void handleClient(int clientSock)
 {
+    auto& orderQueue = getOrderQueue();
     while (running)
     {
         OrderMessage order;
